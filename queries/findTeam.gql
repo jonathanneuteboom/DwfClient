@@ -1,0 +1,55 @@
+query findTeam($teamId: String!) {
+  findTeam(teamId: $teamId) {
+    ...defaultTeamQQQ
+    __typename
+  }
+}
+
+fragment defaultTeamQQQ on DefaultTeam {
+  id
+  name
+  clubCode
+  isCompositionEditable
+  players {
+    ...defaultPlayerQQQ
+    __typename
+  }
+  teamOfficials {
+    ...defaultTeamOfficialQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment defaultPlayerQQQ on DefaultPlayer {
+  person {
+    ...backendPersonQQQ
+    __typename
+  }
+  isLibero
+  isCaptain
+  isDefault
+  number
+  isExtra
+  __typename
+}
+
+fragment backendPersonQQQ on BackendPerson {
+  id
+  name
+  first
+  last
+  picture
+  hash
+  __typename
+}
+
+fragment defaultTeamOfficialQQQ on DefaultTeamOfficial {
+  person {
+    ...backendPersonQQQ
+    __typename
+  }
+  role
+  isDefault
+  __typename
+}

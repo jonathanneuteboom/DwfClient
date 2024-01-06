@@ -1,0 +1,61 @@
+query loadResultsList {
+  findAllResults {
+    ...matchReferenceQQQ
+    __typename
+  }
+}
+
+fragment matchReferenceQQQ on MatchReference {
+  id
+  status
+  reference
+  timestamp
+  location {
+    ...locationQQQ
+    __typename
+  }
+  court
+  teams {
+    ...teamReferenceQQQ
+    __typename
+  }
+  result
+  scoresheets {
+    ...scoresheetReferenceQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment locationQQQ on Location {
+  id
+  name
+  city
+  __typename
+}
+
+fragment teamReferenceQQQ on TeamReference {
+  id
+  clubCode
+  name
+  logo
+  __typename
+}
+
+fragment scoresheetReferenceQQQ on ScoresheetReference {
+  id
+  matchId
+  isDemo
+  createdAt
+  currentSet
+  status
+  isAborted
+  deviceId
+  deviceName
+  userId
+  userName
+  reasonNotPlayed
+  currentSetScore
+  score
+  __typename
+}

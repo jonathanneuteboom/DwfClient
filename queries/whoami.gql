@@ -1,0 +1,16 @@
+query whoami {
+  whoami {
+    ...userQQQ
+    __typename
+  }
+}
+
+fragment userQQQ on User {
+  userId
+  familyName
+  givenName
+  roles
+  serverTime
+  clubs
+  __typename
+}
