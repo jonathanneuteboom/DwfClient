@@ -1,65 +1,29 @@
-from dateutil import parser
-
-
-class LogEntryParameter:
-    def fromJSON(data):
-        newLogEntryParameter = LogEntryParameter()
-        newLogEntryParameter.label = data["label"]
-        newLogEntryParameter.value = data["value"]
-
-        return newLogEntryParameter
-
-
-class LogEntry:
-    def fromJSON(data):
-        newLogEntry = LogEntry()
-        newLogEntry.id = data["id"]
-        newLogEntry.isReverted = data["isReverted"]
-        newLogEntry.timestamp = parser.parse(data["timestamp"])
-        newLogEntry.template = data["template"]
-        newLogEntry.message = data["message"]
-        newLogEntry.teamId = data["teamId"]
-        newLogEntry.points = data["points"]
-        newLogEntry.isPublic = data["isPublic"]
-        newLogEntry.type = data["type"]
-        newLogEntry.servingPlayerID = data["servingPlayerId"]
-        newLogEntry.parameters = [
-            LogEntryParameter.fromJSON(parameter) for parameter in data["parameters"]
-        ]
-
-        return newLogEntry
-
-
-class LineUpPosition:
-    def fromJSON(data):
-        newLineUpPostion = LineUpPosition()
-        newLineUpPostion.playerId = data["playerId"]
-        newLineUpPostion.isExceptionalReplaced = data["isExceptionalReplaced"]
-
-        return newLineUpPostion
-
-
-class TimeOut:
-    def fromJSON(data):
-        newTimeOut = TimeOut()
-        newTimeOut.points = data["points"]
-
-        return newTimeOut
-
-
-class SetConfiguration:
-    def fromJSON(data):
-        newSetConfiguration = SetConfiguration()
-        newSetConfiguration.minScore = data["minScore"]
-        newSetConfiguration.minDifference = data["minDifference"]
-        newSetConfiguration.substitutionsPerTeam = data["substitutionsPerTeam"]
-        newSetConfiguration.timeOutsPerTeam = data["timeOutsPerTeam"]
-        newSetConfiguration.sideChangeAt = data["sideChangeAt"]
-
-        return newSetConfiguration
+from DwfModels.DwfTypes import Points
+from DwfModels.LineUpPosition import LineUpPosition
+from DwfModels.LogEntry import LogEntry
+from DwfModels.SetConfiguration import SetConfiguration
+from DwfModels.Substitution import Substitution
+from DwfModels.TimeOut import TimeOut
 
 
 class Set:
+    status: str
+    points: Points
+    enoughPlayers: bool
+    courtAssignments: list[str]
+    serveOrder: list[str]
+    currenServeTeamId: str
+    currenServeCount: int
+    startLineUp: list[list[str]]
+    LogEntries: list[LogEntry]
+    currentLineUp: list[list[LineUpPosition]]
+    substitutions: list[list[Substitution]]
+    timeOuts: list[list[TimeOut]]
+    type: str
+    canceledLive: bool
+    isSwitched: bool
+    configuration: SetConfiguration
+
     def fromJSON(data):
         newSet = Set()
         newSet.status = data["status"]
@@ -73,16 +37,23 @@ class Set:
             LogEntry.fromJSON(logEntry) for logEntry in data["logEntries"]
         ]
 
-        for currentLineUpPerTeam in data["currentLineUp"] or []:
-            newSet.currentLineUp = [
-                LineUpPosition.fromJSON(lineUp) for lineUp in currentLineUpPerTeam
+        newSet.currentLineUp = [
+            [LineUpPosition.fromJSON(lineUp) for lineUp in currentLineUpPerTeam]
+            for currentLineUpPerTeam in data["currentLineUp"] or [[], []]
+        ]
+
+        newSet.substitutions = [
+            [
+                Substitution.fromJSON(substitution)
+                for substitution in substitutionsPerTeam
             ]
+            for substitutionsPerTeam in data["substitutions"] or [[], []]
+        ]
 
-        for substitutionsPerTeam in data["currentLineUp"] or []:
-            newSet.substitutions = substitutionsPerTeam
-
-        for timeOutsPerTeam in data["timeOuts"]:
-            newSet.timeOuts = [TimeOut.fromJSON(timeOut) for timeOut in timeOutsPerTeam]
+        newSet.timeOuts = [
+            [TimeOut.fromJSON(timeOut) for timeOut in timeOutsPerTeam]
+            for timeOutsPerTeam in data["timeOuts"] or [[], []]
+        ]
 
         newSet.type = data["type"]
         newSet.canceledLive = data["canceledLive"]

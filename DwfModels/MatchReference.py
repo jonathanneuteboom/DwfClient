@@ -2,6 +2,7 @@ import datetime
 
 from dateutil import parser
 
+from DwfModels.DwfTypes import Points
 from DwfModels.Location import Location
 from DwfModels.ScoresheetReference import ScoresheetReference
 from DwfModels.Team import Team
@@ -16,7 +17,7 @@ class MatchReference:
     location: Location
     court: str
     teams: list[Team]
-    result: list[int]
+    result: Points
     scoresheets: list[ScoresheetReference]
 
     def fromJSON(data):

@@ -1,7 +1,8 @@
+import datetime
+
 from dateutil import parser
 
-
-import datetime
+from DwfModels.DwfTypes import Points, SetScore
 
 
 class ScoresheetReference:
@@ -17,8 +18,8 @@ class ScoresheetReference:
     userId: int
     userName: str
     reasonNotPlayed: str
-    currentSetScore: list[int]
-    score: list[int]
+    currentSetScore: Points
+    score: SetScore
 
     def fromJSON(data):
         newScoresheetReference = ScoresheetReference()

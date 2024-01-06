@@ -2,6 +2,11 @@ from DwfModels.Person import Person
 
 
 class TeamOfficial:
+    id: str
+    person: Person
+    role: str
+    status: str
+
     def fromJSON(data):
         newTeamOfficial = TeamOfficial()
         newTeamOfficial.id = data["id"]

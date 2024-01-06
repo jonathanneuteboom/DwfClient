@@ -1,5 +1,6 @@
 import datetime
 
+from DwfModels.DwfTypes import Points
 from DwfModels.Location import Location
 from DwfModels.Official import Official
 from DwfModels.ScoresheetReference import ScoresheetReference
@@ -14,7 +15,7 @@ class Match:
     location: Location
     court: str
     teams: list[Team]
-    result: list[int]
+    result: Points
     scoresheetReference: ScoresheetReference
 
     def fromJSON(data):

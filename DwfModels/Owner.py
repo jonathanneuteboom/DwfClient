@@ -1,4 +1,9 @@
 class Owner:
+    userId: str
+    userName: str
+    deviceId: str
+    deviceName: str
+
     def fromJSON(data):
         newOwner = Owner()
         newOwner.userId = data["userId"]

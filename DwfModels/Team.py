@@ -1,11 +1,20 @@
 from DwfModels.Approval import Approval
-from DwfModels.Issue import Issue
 from DwfModels.Player import Player
 from DwfModels.Sanction import Sanction
 from DwfModels.TeamOfficial import TeamOfficial
 
 
 class Team:
+    id: str
+    clubCode: str
+    name: str
+    logo: str
+    players: list[Player]
+    teamOfficials: list[TeamOfficial]
+    teamLoaded: bool
+    sanctions: list[Sanction]
+    approval: Approval
+
     def fromJSON(data):
         newTeam = Team()
         newTeam.id = data["id"]
@@ -21,7 +30,6 @@ class Team:
         newTeam.sanctions = [
             Sanction.fromJSON(sanction) for sanction in data["sanctions"]
         ]
-        newTeam.issues = [Issue.fromJSON(issue) for issue in data["issues"]]
         newTeam.approval = Approval.fromJSON(data["approval"])
 
         return newTeam

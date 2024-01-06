@@ -1,4 +1,13 @@
+from DwfModels.DwfTypes import Points
+
+
 class Sanction:
+    id: str
+    type: str
+    set: int
+    points: Points
+    participantId: str
+
     def fromJSON(data):
         newSanction = Sanction()
         newSanction.id = data["id"]

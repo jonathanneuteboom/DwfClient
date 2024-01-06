@@ -66,7 +66,7 @@ def findScoresheet(session: requests.Session, scoresheetId: str):
     if "errors" in response:
         raise Exception("Fout in request")
 
-    return Scoresheet(**response["data"]["findScoresheet"])
+    return Scoresheet.fromJSON(response["data"]["findScoresheet"])
 
 
 def graphql_query(session: requests.Session, query: str, variables: dict = {}):

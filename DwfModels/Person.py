@@ -1,7 +1,14 @@
+import datetime
+
 from dateutil import parser
 
 
 class Person:
+    id: str
+    name: str
+    first: str
+    last: str
+
     def fromJSON(data):
         if data["__typename"] == "BackendPerson":
             return BackendPerson.fromJSON(data)
@@ -10,6 +17,8 @@ class Person:
 
 
 class CustomPerson(Person):
+    birthDate: datetime
+
     def fromJSON(data):
         newCustomPerson = CustomPerson()
         newCustomPerson.id = data["id"]
@@ -22,6 +31,9 @@ class CustomPerson(Person):
 
 
 class BackendPerson(Person):
+    picture: str
+    hash: str
+
     def fromJSON(data):
         newPerson = BackendPerson()
         newPerson.id = data["id"]
