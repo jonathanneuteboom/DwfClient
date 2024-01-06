@@ -24,9 +24,17 @@ def getDefaultSession(username: str, password: str):
     data = {"_username": username, "_password": password}
     session.post("https://login.nevobo.nl/login_check", data=data)
 
+    requiredTokens = ["accessToken", "idToken", "refreshToken"]
+
     tokens = {
-        key: session.cookies[key] for key in ["accessToken", "idToken", "refreshToken"]
+        cookie: session.cookies[cookie]
+        for cookie in session.cookies.keys()
+        if cookie in requiredTokens
     }
+
+    if len(tokens) != len(requiredTokens):
+        raise Exception("Username/password incorrect")
+
     json.dump(tokens, open("tokens.json", "w"), indent=2)
 
     return session
@@ -40,7 +48,7 @@ def getSession(username: str, password: str):
             session.cookies[key] = tokens[key]
 
         respone = whoami(session)
-        if len(respone["errors"]) == 0:
+        if "errors" not in respone:
             return session
 
     return getDefaultSession(username, password)

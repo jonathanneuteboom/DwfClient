@@ -1,5 +1,6 @@
 import json
-from DwfQuery import findMatch, findTeam, loadResultsList
+
+from DwfQuery import findScoresheet, lookupResultsByTeam
 from DwfSession import getSession
 
 with open("credentials.json", "r") as file:
@@ -9,5 +10,12 @@ with open("credentials.json", "r") as file:
 username, password = credentials.values()
 
 session = getSession(username, password)
-team = loadResultsList(session)
-print(json.dumps(team, indent=2))
+
+scoresheets = []
+
+results = lookupResultsByTeam(session)
+for result in results:
+    newScoresheet = findScoresheet(session, result.scoresheets[0].id)
+    scoresheets.append(newScoresheet)
+
+asd = 1

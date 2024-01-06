@@ -1,5 +1,8 @@
 import requests
 
+from DwfModels.MatchReference import MatchReference
+from DwfModels.Scoresheet import Scoresheet
+
 
 def getFile(filename):
     with open(filename, "r") as file:
@@ -42,7 +45,28 @@ def lookupResultsByTeam(session: requests.Session, teamId: str = "ckl9q4x-hs-3")
     query = getFile("queries/lookupResultsByTeam.gql")
     variables = {"teamId": teamId}
 
-    return graphql_query(session, query, variables)
+    response = graphql_query(session, query, variables)
+
+    lookupResultsByTeam = response["data"]["lookupResultsByTeam"]
+
+    matches: list[MatchReference] = []
+    for result in lookupResultsByTeam:
+        newMatchReference = MatchReference.fromJSON(result)
+        matches.append(newMatchReference)
+
+    return matches
+
+
+def findScoresheet(session: requests.Session, scoresheetId: str):
+    query = getFile("queries/findScoresheet.gql")
+    variables = {"scoresheetId": scoresheetId}
+
+    response = graphql_query(session, query, variables)
+    response["data"]["findScoresheet"]
+    if "errors" in response:
+        raise Exception("Fout in request")
+
+    return Scoresheet(**response["data"]["findScoresheet"])
 
 
 def graphql_query(session: requests.Session, query: str, variables: dict = {}):

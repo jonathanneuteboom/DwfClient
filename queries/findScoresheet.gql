@@ -1,0 +1,382 @@
+query findScoresheet($scoresheetId: String!) {
+  findScoresheet(id: $scoresheetId) {
+    ...scoresheetQQQ
+    __typename
+  }
+}
+
+fragment scoresheetQQQ on Scoresheet {
+  id
+  createdAt
+  status
+  isAborted
+  score
+  reasonNotPlayed
+  match {
+    ...matchQQQ
+    __typename
+  }
+  owner {
+    ...ownerQQQ
+    __typename
+  }
+  sets {
+    ...setQQQ
+    __typename
+  }
+  approval {
+    timestamp
+    userId
+    userName
+    __typename
+  }
+  __typename
+}
+
+fragment matchQQQ on Match {
+  id
+  status
+  reference
+  configuration {
+    ...configurationQQQ
+    __typename
+  }
+  timestamp
+  location {
+    ...locationQQQ
+    __typename
+  }
+  court
+  teams {
+    ...teamQQQ
+    __typename
+  }
+  officials {
+    ...officialQQQ
+    __typename
+  }
+  issues {
+    ...issueQQQ
+    __typename
+  }
+  notes {
+    ...noteQQQ
+    __typename
+  }
+  isEditableIn {
+    ...editableInfoQQQ
+    __typename
+  }
+  result
+  scoresheets {
+    ...scoresheetReferenceQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment configurationQQQ on Configuration {
+  matchResults
+  setConfiguration {
+    ...setConfigurationQQQ
+    __typename
+  }
+  rotateAfterServes
+  substitutionType
+  playersOnCourtMinStart
+  playersOnCourtMinEnd
+  playersOnCourtNormal
+  playersMax {
+    regular
+    libero
+    __typename
+  }
+  teamOfficialsMax
+  captainRequired
+  teamOfficialsByRole {
+    ...teamOfficialByRoleQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment setConfigurationQQQ on SetConfiguration {
+  minScore
+  minDifference
+  substitutionsPerTeam
+  timeOutsPerTeam
+  sideChangeAt
+  __typename
+}
+
+fragment teamOfficialByRoleQQQ on TeamOfficialByRole {
+  role
+  min
+  max
+  __typename
+}
+
+fragment locationQQQ on Location {
+  id
+  name
+  city
+  __typename
+}
+
+fragment teamQQQ on Team {
+  id
+  clubCode
+  name
+  logo
+  players {
+    ...playerQQQ
+    __typename
+  }
+  teamOfficials {
+    ...teamOfficialQQQ
+    __typename
+  }
+  teamLoaded
+  sanctions {
+    ...sanctionQQQ
+    __typename
+  }
+  issues {
+    ...issueQQQ
+    __typename
+  }
+  approval {
+    ...approvalQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment playerQQQ on Player {
+  id
+  person {
+    ...personQQQ
+    __typename
+  }
+  number
+  isLibero
+  isCaptain
+  issues {
+    ...issueQQQ
+    __typename
+  }
+  status
+  hasPlayed
+  __typename
+}
+
+fragment personQQQ on PersonOutput {
+  ...backendPersonQQQ
+  ...customPersonQQQ
+  __typename
+}
+
+fragment backendPersonQQQ on BackendPerson {
+  id
+  name
+  first
+  last
+  picture
+  hash
+  __typename
+}
+
+fragment customPersonQQQ on CustomPerson {
+  id
+  name
+  birthDate
+  first
+  last
+  __typename
+}
+
+fragment issueQQQ on Issue {
+  type
+  template
+  message
+  parameters {
+    ...issueParameterQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment issueParameterQQQ on IssueParameter {
+  label
+  value
+  __typename
+}
+
+fragment teamOfficialQQQ on TeamOfficial {
+  id
+  person {
+    ...personQQQ
+    __typename
+  }
+  role
+  status
+  # issues {
+  #   ...issueQQQ
+  #   __typename
+  # }
+  __typename
+}
+
+fragment sanctionQQQ on Sanction {
+  id
+  type
+  set
+  points
+  participantId
+  __typename
+}
+
+fragment approvalQQQ on Approval {
+  timestamp
+  userId
+  userName
+  __typename
+}
+
+fragment officialQQQ on Official {
+  id
+  role
+  required
+  editable
+  person {
+    ...personQQQ
+    __typename
+  }
+  status
+  issues {
+    ...issueQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment noteQQQ on Note {
+  id
+  timestamp
+  userId
+  content
+  teamId
+  __typename
+}
+
+fragment editableInfoQQQ on EditableInfo {
+  match
+  teams
+  __typename
+}
+
+fragment scoresheetReferenceQQQ on ScoresheetReference {
+  id
+  matchId
+  isDemo
+  createdAt
+  currentSet
+  status
+  isAborted
+  deviceId
+  deviceName
+  userId
+  userName
+  reasonNotPlayed
+  currentSetScore
+  score
+  __typename
+}
+
+fragment ownerQQQ on Owner {
+  userId
+  userName
+  deviceId
+  deviceName
+  __typename
+}
+
+fragment setQQQ on Set {
+  status
+  points
+  enoughPlayers
+  courtAssignment
+  serveOrder
+  currentServeTeamId
+  currentServeCount
+  startLineUp
+  logEntries {
+    ...logEntryQQQ
+    __typename
+  }
+  currentLineUp {
+    ...lineupPositionQQQ
+    __typename
+  }
+  substitutions {
+    ...substitutionQQQ
+    __typename
+  }
+  timeOuts {
+    ...timeOutQQQ
+    __typename
+  }
+  type
+  canceledLive
+  isSwitched
+  configuration {
+    ...setConfigurationQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment lineupPositionQQQ on LineupPosition {
+  # originalId
+  playerId
+  isExceptionalReplaced
+  __typename
+}
+
+fragment logEntryQQQ on LogEntry {
+  id
+  isReverted
+  timestamp
+  template
+  message
+  teamId
+  points
+  isPublic
+  type
+  servingPlayerId
+  serializedEvent
+  parameters {
+    ...logEntryParameterQQQ
+    __typename
+  }
+  __typename
+}
+
+fragment logEntryParameterQQQ on LogEntryParameter {
+  label
+  value
+  __typename
+}
+
+fragment substitutionQQQ on Substitution {
+  playerInId
+  # playerOutId
+  exceptional
+  points
+  __typename
+}
+
+fragment timeOutQQQ on TimeOut {
+  points
+  __typename
+}
