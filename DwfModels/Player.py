@@ -1,5 +1,3 @@
-from enum import Enum
-
 from DwfModels.DwfTypes import ApprovalStatus, HasPlayed
 from DwfModels.Person import Person
 

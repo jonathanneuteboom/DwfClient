@@ -1,5 +1,4 @@
 import datetime
-from enum import Enum
 
 from dateutil import parser
 

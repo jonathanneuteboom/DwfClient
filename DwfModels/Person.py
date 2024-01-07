@@ -10,10 +10,13 @@ class Person:
     last: str
 
     def fromJSON(data):
-        if data["__typename"] == "BackendPerson":
-            return BackendPerson.fromJSON(data)
-        else:
-            return CustomPerson.fromJSON(data)
+        match data["__typename"]:
+            case "BackendPerson":
+                return BackendPerson.fromJSON(data)
+            case "CustomPerson":
+                return CustomPerson.fromJSON(data)
+            case _:
+                raise Exception("Unknown type")
 
 
 class CustomPerson(Person):

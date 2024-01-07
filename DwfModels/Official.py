@@ -1,4 +1,4 @@
-from DwfModels.DwfTypes import ApprovalStatus, OfficialRole
+from DwfModels.DwfTypes import OfficialRole, OfficialStatus
 from DwfModels.Person import Person
 
 
@@ -8,7 +8,7 @@ class Official:
     required: bool
     editable: bool
     person: Person
-    status: ApprovalStatus
+    status: OfficialStatus
 
     def fromJSON(data):
         newOfficial = Official()
@@ -16,7 +16,7 @@ class Official:
         newOfficial.role = OfficialRole[data["role"]]
         newOfficial.required = data["required"]
         newOfficial.editable = data["editable"]
-        newOfficial.person = Person.fromJSON(data["person"])
-        newOfficial.status = ApprovalStatus[data["status"]]
+        newOfficial.person = Person.fromJSON(data["person"]) if data["person"] else None
+        newOfficial.status = OfficialStatus[data["status"]]
 
         return newOfficial

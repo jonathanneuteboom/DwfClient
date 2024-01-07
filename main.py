@@ -1,6 +1,7 @@
 import json
 
-from DwfQuery import findScoresheet, lookupResultsByTeam
+from DwfModels.DwfTypes import MatchStatus
+from DwfQuery import findAllTeams, findScoresheet, lookupResultsByTeam
 from DwfSession import getSession
 
 with open("credentials.json", "r") as file:
@@ -11,11 +12,12 @@ username, password = credentials.values()
 
 session = getSession(username, password)
 
-scoresheets = []
+teams = findAllTeams(session)
+for team in teams:
+    results = lookupResultsByTeam(session, team.id)
+    for result in results:
+        if result.status in [MatchStatus.POSTPONED, MatchStatus.CANCELLED]:
+            continue
 
-results = lookupResultsByTeam(session)
-for result in results:
-    newScoresheet = findScoresheet(session, result.scoresheets[0].id)
-    scoresheets.append(newScoresheet)
-
-asd = 1
+        for scoresheet in result.scoresheets:
+            findScoresheet(session, scoresheet.id)

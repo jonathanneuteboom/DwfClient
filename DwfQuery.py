@@ -2,6 +2,7 @@ import requests
 
 from DwfModels.MatchReference import MatchReference
 from DwfModels.Scoresheet import Scoresheet
+from DwfModels.TeamReference import TeamReference
 
 
 def getFile(filename):
@@ -14,7 +15,7 @@ def whoami(session: requests.Session):
     return graphql_query(session, query)
 
 
-def findTeam(session: requests.Session, teamId: str = "ckl9q4x-hs-3"):
+def findTeam(session: requests.Session, teamId: str):
     query = getFile("queries/findTeam.gql")
     variables = {"teamId": teamId}
 
@@ -34,14 +35,17 @@ def loadResultsList(session: requests.Session):
     return graphql_query(session, query)
 
 
-def lookupMatchesByTeam(session: requests.Session, teamId: str = "ckl9q4x-hs-3"):
+def lookupMatchesByTeam(session: requests.Session, teamId: str):
     query = getFile("queries/lookupMatchesByTeam.gql")
     variables = {"teamId": teamId}
 
-    return graphql_query(session, query, variables)
+    response = graphql_query(session, query, variables)
+
+    data = response["data"]["lookupMatchesByTeam"]
+    return [MatchReference.fromJSON(match) for match in data]
 
 
-def lookupResultsByTeam(session: requests.Session, teamId: str = "ckl9q4x-hs-3"):
+def lookupResultsByTeam(session: requests.Session, teamId: str):
     query = getFile("queries/lookupResultsByTeam.gql")
     variables = {"teamId": teamId}
 
@@ -49,12 +53,7 @@ def lookupResultsByTeam(session: requests.Session, teamId: str = "ckl9q4x-hs-3")
 
     lookupResultsByTeam = response["data"]["lookupResultsByTeam"]
 
-    matches: list[MatchReference] = []
-    for result in lookupResultsByTeam:
-        newMatchReference = MatchReference.fromJSON(result)
-        matches.append(newMatchReference)
-
-    return matches
+    return [MatchReference.fromJSON(match) for match in lookupResultsByTeam]
 
 
 def findScoresheet(session: requests.Session, scoresheetId: str):
@@ -62,11 +61,20 @@ def findScoresheet(session: requests.Session, scoresheetId: str):
     variables = {"scoresheetId": scoresheetId}
 
     response = graphql_query(session, query, variables)
-    response["data"]["findScoresheet"]
     if "errors" in response:
-        raise Exception("Fout in request")
+        # raise Exception("Fout in request")
+        return
 
     return Scoresheet.fromJSON(response["data"]["findScoresheet"])
+
+
+def findAllTeams(session: requests.Session):
+    query = getFile("queries/findAllTeams.gql")
+
+    response = graphql_query(session, query)
+    data = response["data"]["findAllTeams"]
+
+    return [TeamReference.fromJSON(team) for team in data]
 
 
 def graphql_query(session: requests.Session, query: str, variables: dict = {}):

@@ -1,8 +1,4 @@
-from enum import Enum
-
-from DwfModels.DwfTypes import Points
-
-SanctionType = Enum("SanctionType", ["WARNING"])
+from DwfModels.DwfTypes import Points, SanctionType
 
 
 class Sanction:

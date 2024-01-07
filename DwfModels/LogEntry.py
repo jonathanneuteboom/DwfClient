@@ -22,6 +22,13 @@ LogEntryType = Enum(
         "SET_START",
         "SET_SUBSTITUTION",
         "SET_TIME_OUT",
+        "PRE_SET_COPY_POSITIONS",
+        "SET_DELAY",
+        "POST_SET_UNMARK_PLAYED",
+        "POST_SET_MARK_PLAYED",
+        "PRE_SET_CLEAR_POSITIONS",
+        "SET_ROTATIONAL_FAULT",
+        "SCORESHEET_FINISH",
     ],
 )
 

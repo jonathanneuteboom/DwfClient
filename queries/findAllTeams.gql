@@ -1,0 +1,14 @@
+query findAllTeams {
+  findAllTeams {
+    ...teamReferenceQQQ
+    __typename
+  }
+}
+
+fragment teamReferenceQQQ on TeamReference {
+  id
+  clubCode
+  name
+  logo
+  __typename
+}

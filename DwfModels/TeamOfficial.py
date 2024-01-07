@@ -1,5 +1,3 @@
-from enum import Enum
-
 from DwfModels.DwfTypes import TeamOfficialRole
 from DwfModels.Person import Person
 

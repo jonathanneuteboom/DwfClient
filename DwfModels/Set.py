@@ -1,5 +1,3 @@
-from enum import Enum
-
 from DwfModels.DwfTypes import Points, SetStatus
 from DwfModels.LineUpPosition import LineUpPosition
 from DwfModels.LogEntry import LogEntry
