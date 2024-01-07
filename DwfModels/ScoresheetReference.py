@@ -1,8 +1,9 @@
 import datetime
+from enum import Enum
 
 from dateutil import parser
 
-from DwfModels.DwfTypes import Points, SetScore
+from DwfModels.DwfTypes import Points, ScoresheetStatus, SetScore
 
 
 class ScoresheetReference:
@@ -11,7 +12,7 @@ class ScoresheetReference:
     isDemo: bool
     createdAt: datetime
     currentSet: int
-    status: str
+    status: ScoresheetStatus
     isAborted: bool
     deviceId: str
     deviceName: str
@@ -28,7 +29,7 @@ class ScoresheetReference:
         newScoresheetReference.isDemo = data["isDemo"]
         newScoresheetReference.createdAt = parser.parse(data["createdAt"])
         newScoresheetReference.currentSet = data.get("currentSet")
-        newScoresheetReference.status = data["status"]
+        newScoresheetReference.status = ScoresheetStatus[data["status"]]
         newScoresheetReference.isAborted = data["isAborted"]
         newScoresheetReference.deviceId = data["deviceId"]
         newScoresheetReference.deviceName = data["deviceName"]

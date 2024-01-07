@@ -1,3 +1,6 @@
+from enum import Enum
+
+from DwfModels.DwfTypes import ApprovalStatus, HasPlayed
 from DwfModels.Person import Person
 
 
@@ -7,8 +10,8 @@ class Player:
     number: int
     isLibero: bool
     isCaptain: bool
-    status: str
-    hasPlayed: bool
+    status: ApprovalStatus
+    hasPlayed: HasPlayed
 
     def fromJSON(data):
         newPlayer = Player()
@@ -17,7 +20,7 @@ class Player:
         newPlayer.number = data["number"]
         newPlayer.isLibero = data["isLibero"]
         newPlayer.isCaptain = data["isCaptain"]
-        newPlayer.status = data["status"]
-        newPlayer.hasPlayed = data["hasPlayed"]
+        newPlayer.status = ApprovalStatus[data["status"]]
+        newPlayer.hasPlayed = HasPlayed[data["hasPlayed"]]
 
         return newPlayer

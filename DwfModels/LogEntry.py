@@ -1,9 +1,29 @@
 import datetime
+from enum import Enum
 
 from dateutil import parser
 
 from DwfModels.DwfTypes import Points
 from DwfModels.LogEntryParameter import LogEntryParameter
+
+LogEntryType = Enum(
+    "LogEntryType",
+    [
+        "GENERAL_ADD_NOTE",
+        "GENERAL_MODIFY_BACKEND_PLAYER",
+        "GENERAL_REVERT",
+        "POST_SET_MODIFY_POINTS",
+        "PRE_SET_ASSIGN_POSITION",
+        "PRE_SET_COURT_ASSIGNMENT",
+        "PRE_SET_SERVE_ORDER",
+        "SET_FINISH",
+        "SET_MISCONDUCT",
+        "SET_SCORE_POINT",
+        "SET_START",
+        "SET_SUBSTITUTION",
+        "SET_TIME_OUT",
+    ],
+)
 
 
 class LogEntry:
@@ -15,7 +35,7 @@ class LogEntry:
     teamId: str
     points: Points
     isPublic: bool
-    type: str
+    type: LogEntryType
     servingPlayerId: str
     parameters: list[LogEntryParameter]
 
@@ -29,7 +49,7 @@ class LogEntry:
         newLogEntry.teamId = data["teamId"]
         newLogEntry.points = data["points"]
         newLogEntry.isPublic = data["isPublic"]
-        newLogEntry.type = data["type"]
+        newLogEntry.type = LogEntryType[data["type"]]
         newLogEntry.servingPlayerId = data["servingPlayerId"]
         newLogEntry.parameters = [
             LogEntryParameter.fromJSON(parameter) for parameter in data["parameters"]

@@ -1,4 +1,6 @@
-from DwfModels.DwfTypes import Points
+from enum import Enum
+
+from DwfModels.DwfTypes import Points, SetStatus
 from DwfModels.LineUpPosition import LineUpPosition
 from DwfModels.LogEntry import LogEntry
 from DwfModels.SetConfiguration import SetConfiguration
@@ -7,7 +9,7 @@ from DwfModels.TimeOut import TimeOut
 
 
 class Set:
-    status: str
+    status: SetStatus
     points: Points
     enoughPlayers: bool
     courtAssignments: list[str]
@@ -26,7 +28,7 @@ class Set:
 
     def fromJSON(data):
         newSet = Set()
-        newSet.status = data["status"]
+        newSet.status = SetStatus[data["status"]]
         newSet.points = data["points"]
         newSet.enoughPlayers = data["enoughPlayers"]
         newSet.courtAssignments = data["courtAssignment"]

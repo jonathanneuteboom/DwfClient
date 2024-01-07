@@ -1,6 +1,6 @@
 import datetime
 
-from DwfModels.DwfTypes import Points
+from DwfModels.DwfTypes import MatchStatus, Points
 from DwfModels.Location import Location
 from DwfModels.Official import Official
 from DwfModels.ScoresheetReference import ScoresheetReference
@@ -9,7 +9,7 @@ from DwfModels.Team import Team
 
 class Match:
     id: int
-    status: str
+    status: MatchStatus
     reference: str
     timestamp: datetime
     location: Location
@@ -21,7 +21,7 @@ class Match:
     def fromJSON(data):
         newMatch = Match()
         newMatch.id = data["id"]
-        newMatch.status = data["status"]
+        newMatch.status = MatchStatus[data["status"]]
         newMatch.reference = data["reference"]
         newMatch.timestamp = data["timestamp"]
         newMatch.location = Location.fromJSON(data["location"])
