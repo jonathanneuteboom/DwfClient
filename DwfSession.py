@@ -1,6 +1,7 @@
-import requests
 import json
 import os
+
+import requests
 
 from DwfQuery import whoami
 
@@ -17,6 +18,8 @@ def readTokens():
 
 
 def getDefaultSession(username: str, password: str):
+    print("Getting new tokens")
+
     session = requests.Session()
 
     session.get("https://dwf.nevobo.nl/login")

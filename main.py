@@ -16,8 +16,11 @@ teams = findAllTeams(session)
 for team in teams:
     results = lookupResultsByTeam(session, team.id)
     for result in results:
-        if result.status in [MatchStatus.POSTPONED, MatchStatus.CANCELLED]:
-            continue
+        count = len(result.scoresheets)
+        if count != 1:
+            print(
+                f"Aantal scorescheets: {count} bij {result.teams[0].name} - {result.teams[1].name}"
+            )
 
         for scoresheet in result.scoresheets:
             findScoresheet(session, scoresheet.id)
